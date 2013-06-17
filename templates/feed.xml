@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+<channel>
+    <title>{{ title|escape }}</title>
+    <link>{{ link|escape }}</link>
+    <description>{{ description|escape }}</description>
+    <generator>http://www.fflow.net/</generator>
+    <pubDate>{{ items.0.publishedDate|escape }}</pubDate>
+    
+    {% for item in items %}
+    <item>
+      <title>{{ item.title|escape }}</title>
+      <link>{{ item.link|escape }}</link>
+      <description>{{ item.content|escape }}</description>
+      <pubDate>{{ item.publishedDate|escape }}</pubDate>
+	  {% if item.thumbnail and item.thumbnail.url %}
+		<media:group>
+        	<media:thumbnail url="{{ item.thumbnail.get_url|escape }}" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" />
+	      {% if item.youtube_id %}
+			<media:content url="http://www.youtube.com/v/{{ item.youtube_id }}" medium="video" type="application/x-shockwave-flash" isDefault="true"/>
+	      {% endif %}
+	      {% if item.vimeo_id %}
+			<media:content url="http://vimeo.com/moogaloop.swf?clip_id={{ item.vimeo_id }}" medium="video" type="application/x-shockwave-flash" isDefault="true"/>
+	      {% endif %}
+		</media:group>
+	  {% endif %}
+    </item>
+    {% endfor %}
+</channel>
+</rss>
+
